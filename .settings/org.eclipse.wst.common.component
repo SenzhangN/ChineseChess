@@ -2,7 +2,7 @@
     <wb-module deploy-name="XiangQi">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="XiangQi"/>
-        <property name="java-output-path" value="/XiangQi/build/classes"/>
+        <property name="java-output-path" value="/ChineseChess/build/classes"/>
+        <property name="context-root" value="ChineseChess"/>
     </wb-module>
 </project-modules>
