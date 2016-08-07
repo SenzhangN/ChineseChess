@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="GBK">
+<meta content="user-scalable=no" name="viewport" />
+<title>中国象棋-sen</title>
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<style>
+	.qz{
+		color:white;
+		position:absolute;
+		border-radius: 50%;
+		padding:5px;
+		font-weight: bolder;
+		font-size: 80px;
+	}
+	.danyuange{
+		color:white;
+		position:absolute;
+		border-radius: 50%;
+		padding:5px;
+		font-weight: bolder;
+		font-size: 80px;
+		z-index:50;
+	}
+	.heif_qz{
+		background-color: black;
+		z-index:0;
+	}
+	.hongf_qz{
+		background-color: red;
+		z-index:100;
+	}
+	.qz_selected{
+		background-color: blue;
+	}
+</style>
+</head>
+<body style="margin:0px;padding:0px;">
+<div style="font-size:50px;float:left;">黑方：电脑</div>
+<div style="font-size:50px;margin-left:500px;">红方：您</div>
+<div style="position:absolute;margin:0px;padding:0px;" id="content">
+	<div style="width:100%;"><img src="images/bg.jpg" style="width:100%;" id="bgimage" /></div>
+</div>
+</body>
+</html>
