@@ -121,14 +121,30 @@ var checkDownQizi = function(selectedObj,targetObj){
 
 //检验車
 var checkJuAndExecutor = function(selectedObj,targetObj){
-	var selectedX = selectedObj.css("left").replace("px","");
-	var selectedY = selectedObj.css("top").replace("px","");
-	var targetX = targetObj.css("left").replace("px","");
-	var targetY = targetObj.css("top").replace("px","");
+	var selectedX = parseInt(selectedObj.css("left").replace("px",""));
+	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
+	var targetX = parseInt(targetObj.css("left").replace("px",""));
+	var targetY = parseInt(targetObj.css("top").replace("px",""));
 	if(selectedX==targetX){		//纵向
-		
+		var num = Math.abs(selectedY-targetY)/yseperate - 1; //两个节点之间共有多少个点
+		var isAllBank = true;
+		for(var i=0;i<num;i++){
+			var min = Math.min(selectedY,targetY);
+			if(hasQizi("qz",selectedX,min+(i+1)*yseperate)){
+				isAllBank = false;
+				return ;
+			}
+		}
 	}else if(selectedY==targetY){	//横向
-		
+		var num = Math.abs(selectedX-targetX)/xseperate - 1; //两个节点之间共有多少个点
+		var isAllBank = true;
+		for(var i=0;i<num;i++){
+			var min = Math.min(selectedX,targetX);
+			if(hasQizi("qz",min+(i+1)*xseperate,selectedY)){
+				isAllBank = false;
+				return ;
+			}
+		}
 	}else{
 		return;
 	}
@@ -165,12 +181,45 @@ var checkMaAndExecutor = function(selectedObj,targetObj){
 
 //检验象
 var checkXiangAndExecutor = function(selectedObj,targetObj){
+	var selectedX = parseInt(selectedObj.css("left").replace("px",""));
+	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
+	var targetX = parseInt(targetObj.css("left").replace("px",""));
+	var targetY = parseInt(targetObj.css("top").replace("px",""));
+	//判断象的线路，并且判断象是否有绊腿
+	var canmove = (Math.abs(selectedX-targetX)== xseperate * 2) && (Math.abs(selectedY-targetY) == yseperate * 2) 	//可以移动
+				  //判断是否有绊腿
+	              &&( ((targetX > selectedX && targetY < selectedY) && !hasQizi("qz",selectedX+1*xseperate,selectedY-1*yseperate))
+	            	||((targetX > selectedX && targetY > selectedY) && !hasQizi("qz",selectedX+1*xseperate,selectedY+1*yseperate))
+	            	||((targetX < selectedX && targetY < selectedY) && !hasQizi("qz",selectedX-1*xseperate,selectedY-1*yseperate))
+	            	||((targetX < selectedX && targetY > selectedY) && !hasQizi("qz",selectedX-1*xseperate,selectedY+1*yseperate))
+	            	);
 	
+	if(canmove){
+	}else{
+		return;
+	}
+	//符合条件，则落子到目标位置
+	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
+	cancleQize(selectedObj);
 };
 
 //检验仕
 var checkShiAndExecutor = function(selectedObj,targetObj){
-	
+	var selectedX = parseInt(selectedObj.css("left").replace("px",""));
+	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
+	var targetX = parseInt(targetObj.css("left").replace("px",""));
+	var targetY = parseInt(targetObj.css("top").replace("px",""));
+	var point = targetObj.attr("point");
+	var x = point.split("-")[1];
+	var y = point.split("-")[0];
+	if(x>2 && x<6 && y>6 && y<10 
+			&& Math.abs(targetX-selectedX)==xseperate && Math.abs(targetY-selectedY)==yseperate){
+	}else{
+		return;
+	}
+	//符合条件，则落子到目标位置
+	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
+	cancleQize(selectedObj);
 };
 
 //检验帅
@@ -198,19 +247,53 @@ var checkShuaiAndExecutor = function(selectedObj,targetObj){
 
 //检验兵
 var checkBingAndExecutor = function(selectedObj,targetObj){
+	var selectedX = parseInt(selectedObj.css("left").replace("px",""));
+	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
+	var targetX = parseInt(targetObj.css("left").replace("px",""));
+	var targetY = parseInt(targetObj.css("top").replace("px",""));
+	var point = targetObj.attr("point");
+	var x = point.split("-")[1];
+	var y = point.split("-")[0];
+	if((y>=5 && selectedX==targetX && (selectedY-targetY==yseperate))
+		|| (y<5 && (Math.abs(targetX-selectedX)==xseperate || Math.abs(targetX-selectedX)==0) 
+				&& (selectedY-targetY==yseperate || selectedY==targetY )
+			)
+	   ){		
+	}else{
+		return;
+	}
 	
+	//符合条件，则落子到目标位置
+	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
+	cancleQize(selectedObj);
 };
 
 //检验炮
 var checkPaoAndExecutor = function(selectedObj,targetObj){
-	var selectedX = selectedObj.css("left").replace("px","");
-	var selectedY = selectedObj.css("top").replace("px","");
-	var targetX = targetObj.css("left").replace("px","");
-	var targetY = targetObj.css("top").replace("px","");
+	var selectedX = parseInt(selectedObj.css("left").replace("px",""));
+	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
+	var targetX = parseInt(targetObj.css("left").replace("px",""));
+	var targetY = parseInt(targetObj.css("top").replace("px",""));
 	if(selectedX==targetX){		//纵向
-		
+		var num = Math.abs(selectedY-targetY)/yseperate - 1; //两个节点之间共有多少个点
+		var isAllBank = true;
+		for(var i=0;i<num;i++){
+			var min = Math.min(selectedY,targetY);
+			if(hasQizi("qz",selectedX,min+(i+1)*yseperate)){
+				isAllBank = false;
+				return ;
+			}
+		}
 	}else if(selectedY==targetY){	//横向
-		
+		var num = Math.abs(selectedX-targetX)/xseperate - 1; //两个节点之间共有多少个点
+		var isAllBank = true;
+		for(var i=0;i<num;i++){
+			var min = Math.min(selectedX,targetX);
+			if(hasQizi("qz",min+(i+1)*xseperate,selectedY)){
+				isAllBank = false;
+				return ;
+			}
+		}
 	}else{
 		return;
 	}
