@@ -149,8 +149,7 @@ var checkJuAndExecutor = function(selectedObj,targetObj){
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验马
@@ -175,8 +174,7 @@ var checkMaAndExecutor = function(selectedObj,targetObj){
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验象
@@ -199,8 +197,7 @@ var checkXiangAndExecutor = function(selectedObj,targetObj){
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验仕
@@ -218,8 +215,7 @@ var checkShiAndExecutor = function(selectedObj,targetObj){
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验帅
@@ -241,8 +237,7 @@ var checkShuaiAndExecutor = function(selectedObj,targetObj){
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验兵
@@ -262,10 +257,8 @@ var checkBingAndExecutor = function(selectedObj,targetObj){
 	}else{
 		return;
 	}
-	
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
 //检验炮
@@ -275,34 +268,61 @@ var checkPaoAndExecutor = function(selectedObj,targetObj){
 	var targetX = parseInt(targetObj.css("left").replace("px",""));
 	var targetY = parseInt(targetObj.css("top").replace("px",""));
 	if(selectedX==targetX){		//纵向
-		var num = Math.abs(selectedY-targetY)/yseperate - 1; //两个节点之间共有多少个点
-		var isAllBank = true;
-		for(var i=0;i<num;i++){
-			var min = Math.min(selectedY,targetY);
-			if(hasQizi("qz",selectedX,min+(i+1)*yseperate)){
-				isAllBank = false;
-				return ;
+		if(hasQizi("qz",targetX,targetY) && hasQizi("heif_qz",targetX,targetY)){	//点击的是黑子
+			var num = Math.abs(selectedY-targetY)/yseperate - 1; //两个节点之间共有多少个点
+			var qzBetweenNum = 0;
+			for(var i=0;i<num;i++){
+				var min = Math.min(selectedY,targetY);
+				if(hasQizi("qz",selectedX,min+(i+1)*yseperate)){
+					qzBetweenNum ++;
+				}
+			}
+			if(qzBetweenNum!=1){		//违反炮吃子必须隔一个子的规则时终止操作
+				return;
+			}
+		}else{	//没有棋子
+			var num = Math.abs(selectedY-targetY)/yseperate - 1; //两个节点之间共有多少个点
+			var isAllBank = true;
+			for(var i=0;i<num;i++){
+				var min = Math.min(selectedY,targetY);
+				if(hasQizi("qz",selectedX,min+(i+1)*yseperate)){
+					isAllBank = false;
+					return ;
+				}
 			}
 		}
 	}else if(selectedY==targetY){	//横向
-		var num = Math.abs(selectedX-targetX)/xseperate - 1; //两个节点之间共有多少个点
-		var isAllBank = true;
-		for(var i=0;i<num;i++){
-			var min = Math.min(selectedX,targetX);
-			if(hasQizi("qz",min+(i+1)*xseperate,selectedY)){
-				isAllBank = false;
-				return ;
+		if(hasQizi("qz",targetX,targetY) && hasQizi("heif_qz",targetX,targetY)){	//点击的是黑子
+			var num = Math.abs(selectedX-targetX)/xseperate - 1; //两个节点之间共有多少个点
+			var qzBetweenNum = 0;
+			for(var i=0;i<num;i++){
+				var min = Math.min(selectedX,targetX);
+				if(hasQizi("qz",min+(i+1)*xseperate,selectedY)){
+					qzBetweenNum ++;
+				}
+			}
+			if(qzBetweenNum!=1){		//违反炮吃子必须隔一个子的规则时终止操作
+				return;
+			}
+		}else{	//没有棋子
+			var num = Math.abs(selectedX-targetX)/xseperate - 1; //两个节点之间共有多少个点
+			var isAllBank = true;
+			for(var i=0;i<num;i++){
+				var min = Math.min(selectedX,targetX);
+				if(hasQizi("qz",min+(i+1)*xseperate,selectedY)){
+					isAllBank = false;
+					return ;
+				}
 			}
 		}
 	}else{
 		return;
 	}
 	//符合条件，则落子到目标位置
-	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
-	cancleQize(selectedObj);
+	luoZi(selectedObj,targetX,targetY);
 };
 
-//检验指定位置是否有棋子
+//检验指定位置是否有棋子	x/y是实际坐标，不是index
 var hasQizi = function(clazz,x,y){
 	var objArr = $("."+clazz);
 	for(var i=0;i<objArr.length;i++){
@@ -313,4 +333,27 @@ var hasQizi = function(clazz,x,y){
 		}
 	}
 	return false;	//没有棋子
+};
+
+//吃掉棋子	x/y是实际坐标，不是index
+var eatQz = function(clazz,x,y){
+	var objArr = $("."+clazz);
+	for(var i=0;i<objArr.length;i++){
+		var obj = objArr.eq(i);
+		if(obj.css("left").replace("px","")==x
+				&& obj.css("top").replace("px","")==y){
+			obj.remove();
+		}
+	}
+};
+
+//落子	落子，取消当前棋子的选择，并且移除被吃掉的棋子
+var luoZi = function(selectedObj,targetX,targetY){
+	//符合条件，则落子到目标位置
+	selectedObj.css("left",targetX+"px").css("top",targetY+"px");
+	//吃子
+	if(hasQizi("heif_qz",targetX,targetY)){	//目标位置有黑子
+		eatQz("heif_qz",targetX,targetY);
+	}
+	cancleQize(selectedObj);
 };
