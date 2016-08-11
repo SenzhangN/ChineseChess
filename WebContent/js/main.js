@@ -2,6 +2,8 @@ var heiindex = ["車","马","相","士","将","士","相","马","車"];
 var hongindex = ["車","馬","象","仕","帅","仕","象","馬","車"];
 var xseperate = 110;
 var yseperate = 110;
+var xmargin = 25;
+var ymargin = 40;
 //棋盘数组
 var qipan = [];
 $(function(){
@@ -59,8 +61,8 @@ var initQipan = function(){
     	var rows = [];
 		for(var j=0;j<9;j++){
 			var obj = {};
-			obj.x = j*xseperate -25;
-			obj.y = i*yseperate -40;
+			obj.x = j*xseperate -xmargin;
+			obj.y = i*yseperate -ymargin;
 			rows.push(obj);
 		}
 		qipan.push(rows);
@@ -356,4 +358,44 @@ var luoZi = function(selectedObj,targetX,targetY){
 		eatQz("heif_qz",targetX,targetY);
 	}
 	cancleQize(selectedObj);
+	//获取当前棋盘状态，发送给后台，让后台来落子
+	getQpStatus();
+};
+
+//获取棋盘数组
+var getQpStatus = function(){
+	var qipanArr = [];
+	for(var i=0;i<10;i++){
+    	var rows = [];
+		for(var j=0;j<9;j++){
+//			rows.push("0_一");
+			rows.push(0);
+		}
+		qipanArr.push(rows);
+	}	
+	var objArr = $(".qz");
+	for(var i=0;i<objArr.length;i++){
+		var obj = objArr.eq(i);
+		var x = (parseInt(obj.css("left").replace("px",""))+xmargin)/xseperate;
+		var y = (parseInt(obj.css("top").replace("px",""))+ymargin)/yseperate;
+		if(obj.attr("player")=="heifang"){
+			qipanArr[y][x] = "0_"+obj.html();	//黑子
+		}else{
+			qipanArr[y][x] = "1_"+obj.html();	//红子
+		}
+	}
+	
+	//console,显示当前棋盘
+//	var str = "";
+//	for(var i=0;i<qipanArr.length;i++){
+//		var rows = qipanArr[i];
+//		for(var j=0;j<9;j++){
+//			if(j==8){
+//				str += rows[j]+"\r\n";
+//			}else{
+//				str += rows[j]+",";
+//			}
+//		}
+//	}
+//	console.log(str);
 };
