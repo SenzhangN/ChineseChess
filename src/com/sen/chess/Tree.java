@@ -148,4 +148,12 @@ public class Tree<T> {
 		return nodes;
 	}
     
+	/**
+	 * 获取父节点
+	 * @return
+	 */
+	public Node<T> getParentNode(Node<T> node){
+		return this.getNodes().get(node.getParent());
+	}
+	
 }
