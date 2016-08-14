@@ -71,7 +71,7 @@ public class Tree<T> {
 	}
 	
 	/**
-	 * 获取所有节点，以List形式返回  
+	 * 获取所有有效节点，以List形式返回  
 	 * @return
 	 */
     public List<Node<T>> getAllNodes(){  
