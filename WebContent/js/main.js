@@ -185,8 +185,11 @@ var checkXiangAndExecutor = function(selectedObj,targetObj){
 	var selectedY = parseInt(selectedObj.css("top").replace("px",""));
 	var targetX = parseInt(targetObj.css("left").replace("px",""));
 	var targetY = parseInt(targetObj.css("top").replace("px",""));
+	var point = targetObj.attr("point");
+	var x = point.split("-")[1];
+	var y = point.split("-")[0];
 	//判断象的线路，并且判断象是否有绊腿
-	var canmove = (Math.abs(selectedX-targetX)== xseperate * 2) && (Math.abs(selectedY-targetY) == yseperate * 2) 	//可以移动
+	var canmove = y>=5 && (Math.abs(selectedX-targetX)== xseperate * 2) && (Math.abs(selectedY-targetY) == yseperate * 2) 	//可以移动
 				  //判断是否有绊腿
 	              &&( ((targetX > selectedX && targetY < selectedY) && !hasQizi("qz",selectedX+1*xseperate,selectedY-1*yseperate))
 	            	||((targetX > selectedX && targetY > selectedY) && !hasQizi("qz",selectedX+1*xseperate,selectedY+1*yseperate))
